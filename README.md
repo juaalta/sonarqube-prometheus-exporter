@@ -2,18 +2,18 @@
 <h4 align="center">Prometheus Exporter Plugin for SonarQube.</h4>
 
 <p align="center">
-  <a href="https://travis-ci.com/dmeiners88/sonarqube-prometheus-exporter">
-    <img src="https://travis-ci.com/dmeiners88/sonarqube-prometheus-exporter.svg?branch=develop"
+  <a href="https://travis-ci.com/juaalta/sonarqube-prometheus-exporter">
+    <img src="https://travis-ci.com/juaalta/sonarqube-prometheus-exporter.svg?branch=develop"
          alt="Build Status">
   </a>
   <a href="https://sonarcloud.io/dashboard?id=de.dmeiners%3Asonar-prometheus-exporter">
     <img src="https://sonarcloud.io/api/project_badges/measure?project=de.dmeiners%3Asonar-prometheus-exporter&metric=alert_status" alt="SonarCloud Analysis">
   </a>
-  <a href="https://github.com/dmeiners88/sonarqube-prometheus-exporter/releases">
-    <img src="https://img.shields.io/github/release/dmeiners88/sonarqube-prometheus-exporter.svg" alt="Download">
+  <a href="https://github.com/juaalta/sonarqube-prometheus-exporter/releases">
+    <img src="https://img.shields.io/github/release/juaalta/sonarqube-prometheus-exporter.svg" alt="Download">
   </a>
-  <a href="https://github.com/dmeiners88/sonarqube-prometheus-exporter/blob/develop/LICENSE">
-    <img src="https://img.shields.io/github/license/dmeiners88/sonarqube-prometheus-exporter.svg" alt="License">
+  <a href="https://github.com/juaalta/sonarqube-prometheus-exporter/blob/develop/LICENSE">
+    <img src="https://img.shields.io/github/license/juaalta/sonarqube-prometheus-exporter.svg" alt="License">
   </a>
   <a href="https://semver.org/spec/v2.0.0.html">
     <img src="https://img.shields.io/badge/semver-2.0.0-brightgreen.svg" alt="Semantic Versioning">
@@ -28,6 +28,11 @@
   <a href="#screenshots">Screenshots</a>
 </p>
 
+
+## Information about the plugin
+
+This plugin is a fork of [dmeiners88 / sonarqube-prometheus-exporter](https://github.com/dmeiners88/sonarqube-prometheus-exporter), as I have seen that the repository has been stopped for a long time, I will evolve in this repository on plugin.
+
 ## Features
 * Configure which metrics to export
 
@@ -36,7 +41,7 @@
 
 ## Installation
 
-1. Download [latest snapshot release](https://github.com/dmeiners88/sonarqube-prometheus-exporter/releases/tag/v1.0.0-SNAPSHOT-2018-07-04)
+1. Download [latest snapshot release](https://github.com/juaalta/sonarqube-prometheus-exporter/releases/tag/v1.0.0-SNAPSHOT-2018-07-04)
 2. Drop `sonar-prometheus-exporter-1.0.0-SNAPSHOT.jar` into `$SONARQUBE_HOME/extensions/plugins`.
 3. Restart the SonarQube server.
 
