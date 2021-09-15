@@ -33,6 +33,7 @@
 
 This plugin is a fork of [dmeiners88 / sonarqube-prometheus-exporter](https://github.com/dmeiners88/sonarqube-prometheus-exporter), as I have seen that the repository has been stopped for a long time, I will evolve in this repository on plugin.
 
+
 ## Features
 * Configure which metrics to export
 
