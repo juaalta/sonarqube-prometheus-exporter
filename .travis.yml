@@ -7,7 +7,7 @@ addons:
     token:
       secure: "183fdb62a299dd7ec8ec95dc9a68f0f85a43dc6a"
 jdk:
-- oraclejdk8
+- openjdk8
 script:
   # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
   - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=juaalta_sonarqube-prometheus-exporter
