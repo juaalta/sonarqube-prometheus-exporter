@@ -35,9 +35,10 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <sonar.apiVersion>7.0</sonar.apiVersion>
+        <sonar.apiVersion>8.9.2.46101</sonar.apiVersion>
         <jdk.min.version>1.8</jdk.min.version>
         <sonar.sources>src/main/java</sonar.sources>
+        <prometheus.simpleclient.version>0.12.0</prometheus.simpleclient.version>
     </properties>
 
     <dependencies>
@@ -55,12 +56,12 @@
         <dependency>
             <groupId>io.prometheus</groupId>
             <artifactId>simpleclient</artifactId>
-            <version>0.4.0</version>
+            <version>${prometheus.simpleclient.version}</version>
         </dependency>
         <dependency>
             <groupId>io.prometheus</groupId>
             <artifactId>simpleclient_common</artifactId>
-            <version>0.4.0</version>
+            <version>${prometheus.simpleclient.version}</version>
         </dependency>
     </dependencies>
 
@@ -69,7 +70,7 @@
             <plugin>
                 <groupId>org.sonarsource.sonar-packaging-maven-plugin</groupId>
                 <artifactId>sonar-packaging-maven-plugin</artifactId>
-                <version>1.18.0.372</version>
+                <version>1.20.0.405</version>
                 <extensions>true</extensions>
                 <configuration>
                     <pluginKey>prometheus-exporter</pluginKey>
