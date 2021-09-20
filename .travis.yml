@@ -9,12 +9,8 @@ addons:
 jdk:
 - openjdk8
 script:
-- mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
+- mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=juaalta_sonarqube-prometheus-exporter
 cache:
   directories:
   - "$HOME/.m2/repository"
   - "$HOME/.sonar/cache"
-env:
-  global:
-    secure: OYrhtuHpcv5OtESej0ppUHL7nEzOobgUTW62YGZF1lDTBB9FC38Oc2fkPZZRdYtvmAnHUZpi+gTBx95bPqbqeAhOvvqHVZXgZFUQOg8/qKCBuQvDAER2kbmd2uosgc2X7rpgcUA4WU58D9A+CHssvOZRwltCZBCdJU7O23xSAn4YGrbAsCzJtE/TcpekI1zCbAMVcnfefH79c2Sa3Rv2xDqURT8R5K9IxXYbjCx31vjV61Ng6yCAU53ducdfvmxy+HlyX+LQFqVBhxKkqmhOnkGO/Z//jS05d+NX2DWb0Nk9HGSzqgjLzPJOqLICRFX0zUpG/B3P5p2/yMVcKb2yMjZjyexl1D7VYrlp+b4UZnOmesyJGqGBTvVoyVZXy5gSIccZWsiQLSmJYGC6tA+zw3vcr892GemCCkFO9u2OdMYsSuraNeumhMGuqNNKNyxZTr2l083deXedMsXzH3bBE5HjjPcbX8Bl6WLKbviTA6dWyeygQc47oCnkukZcFt4JcirHWMl7ugheiuPUm4GpeSbXeR6Gj1SA6e2iBHTTBO7mUUnnMIJ2Cl3HPSOUeICMOauWW0bKbL5liDXDM7XMJhAdeaCKq7/RzNkHvngRAwYHIHcRo/hFmNluWzLz5pkQR5wtd4ORXdce/hpVO4DcXHZYhChQB2UlBb7WSmw1NLY=
-
