@@ -1,4 +1,4 @@
-package de.dmeiners.sonar.prometheus;
+package es.juaalta.sonar.prometheus;
 
 import static java.util.Objects.nonNull;
 

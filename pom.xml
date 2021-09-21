@@ -3,11 +3,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>de.dmeiners</groupId>
+    <groupId>es.juaalta</groupId>
     <artifactId>sonar-prometheus-exporter</artifactId>
     <packaging>sonar-plugin</packaging>
     <version>1.0.0-SNAPSHOT</version>
-    <url>https://github.com/dmeiners88/sonarqube-prometheus-exporter</url>
+    <url>https://github.com/juaalta/sonarqube-prometheus-exporter</url>
     <licenses>
         <license>
             <name>Apache License, Version 2.0</name>
@@ -18,15 +18,15 @@
     </licenses>
     <developers>
         <developer>
-            <name>Daniel Meiners</name>
-            <email>mail@dmeiners.de</email>
+            <name>Juan Salvador Aleixandre</name>
+            <email>juaalta@gmail.com</email>
         </developer>
     </developers>
     <issueManagement>
-        <url>https://github.com/dmeiners88/sonarqube-prometheus-exporter/issues</url>
+        <url>https://github.com/juaalta/sonarqube-prometheus-exporter/issues</url>
     </issueManagement>
     <scm>
-        <url>https://github.com/dmeiners88/sonarqube-prometheus-exporter.git</url>
+        <url>https://github.com/juaalta/sonarqube-prometheus-exporter.git</url>
     </scm>
 
     <name>SonarQube Prometheus Exporter</name>
@@ -39,6 +39,7 @@
         <jdk.min.version>1.8</jdk.min.version>
         <sonar.sources>src/main/java</sonar.sources>
         <prometheus.simpleclient.version>0.12.0</prometheus.simpleclient.version>
+        <sonar-packaging-maven-plugin.version>1.20.0.405</sonar-packaging-maven-plugin.version>
     </properties>
 
     <dependencies>
@@ -70,11 +71,11 @@
             <plugin>
                 <groupId>org.sonarsource.sonar-packaging-maven-plugin</groupId>
                 <artifactId>sonar-packaging-maven-plugin</artifactId>
-                <version>1.20.0.405</version>
+                <version>${sonar-packaging-maven-plugin.version}</version>
                 <extensions>true</extensions>
                 <configuration>
                     <pluginKey>prometheus-exporter</pluginKey>
-                    <pluginClass>de.dmeiners.sonar.prometheus.PrometheusExporterPlugin</pluginClass>
+                    <pluginClass>es.juaalta.sonar.prometheus.PrometheusExporterPlugin</pluginClass>
                     <pluginName>Prometheus Exporter</pluginName>
                 </configuration>
             </plugin>
