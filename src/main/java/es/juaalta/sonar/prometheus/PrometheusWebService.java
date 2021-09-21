@@ -32,6 +32,7 @@ import io.prometheus.client.exporter.common.TextFormat;
  * @author juaalta
  *
  */
+@SuppressWarnings("deprecation")
 public class PrometheusWebService implements WebService {
 
   static final Set<Metric<?>> SUPPORTED_METRICS = new HashSet<>();
@@ -50,15 +51,19 @@ public class PrometheusWebService implements WebService {
 
     CoreMetrics.getMetrics().forEach(x -> {
       // Not insert deprecated metrics
-      if ((x.getKey() != CoreMetrics.QUALITY_PROFILES_KEY) && (x.getKey() != CoreMetrics.DIRECTORIES_KEY)
-          && (x.getKey() != CoreMetrics.PUBLIC_API_KEY) && (x.getKey() != CoreMetrics.PUBLIC_DOCUMENTED_API_DENSITY_KEY)
-          && (x.getKey() != CoreMetrics.PUBLIC_UNDOCUMENTED_API_KEY) && (x.getKey() != CoreMetrics.FILE_COMPLEXITY_KEY)
-          && (x.getKey() != CoreMetrics.COMPLEXITY_IN_CLASSES_KEY) && (x.getKey() != CoreMetrics.CLASS_COMPLEXITY_KEY)
-          && (x.getKey() != CoreMetrics.COMPLEXITY_IN_FUNCTIONS_KEY)
-          && (x.getKey() != CoreMetrics.FUNCTION_COMPLEXITY_KEY)
-          && (x.getKey() != CoreMetrics.FUNCTION_COMPLEXITY_DISTRIBUTION_KEY)
-          && (x.getKey() != CoreMetrics.FILE_COMPLEXITY_DISTRIBUTION_KEY)
-          && (x.getKey() != CoreMetrics.DUPLICATIONS_DATA_KEY) && (x.getKey() != CoreMetrics.COMMENT_LINES_DATA_KEY)) {
+      if (!(x.getKey().equals(CoreMetrics.QUALITY_PROFILES_KEY)) && !(x.getKey().equals(CoreMetrics.DIRECTORIES_KEY))
+          && !(x.getKey().equals(CoreMetrics.PUBLIC_API_KEY))
+          && !(x.getKey().equals(CoreMetrics.PUBLIC_DOCUMENTED_API_DENSITY_KEY))
+          && !(x.getKey().equals(CoreMetrics.PUBLIC_UNDOCUMENTED_API_KEY))
+          && !(x.getKey().equals(CoreMetrics.FILE_COMPLEXITY_KEY))
+          && !(x.getKey().equals(CoreMetrics.COMPLEXITY_IN_CLASSES_KEY))
+          && !(x.getKey().equals(CoreMetrics.CLASS_COMPLEXITY_KEY))
+          && !(x.getKey().equals(CoreMetrics.COMPLEXITY_IN_FUNCTIONS_KEY))
+          && !(x.getKey().equals(CoreMetrics.FUNCTION_COMPLEXITY_KEY))
+          && !(x.getKey().equals(CoreMetrics.FUNCTION_COMPLEXITY_DISTRIBUTION_KEY))
+          && !(x.getKey().equals(CoreMetrics.FILE_COMPLEXITY_DISTRIBUTION_KEY))
+          && !(x.getKey().equals(CoreMetrics.DUPLICATIONS_DATA_KEY))
+          && !(x.getKey().equals(CoreMetrics.COMMENT_LINES_DATA_KEY))) {
         SUPPORTED_METRICS.add(x);
       }
     });
