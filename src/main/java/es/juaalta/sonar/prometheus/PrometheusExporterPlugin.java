@@ -27,7 +27,7 @@ import org.sonar.api.PropertyType;
 import org.sonar.api.config.PropertyDefinition;
 
 /**
- * @author juata
+ * @author juaalta
  *
  */
 public class PrometheusExporterPlugin implements Plugin {

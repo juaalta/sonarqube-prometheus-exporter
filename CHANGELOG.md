@@ -5,3 +5,23 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+
+### Added
+
+* The metrics are obtained from the list of metrics that the SonarQube has internally.
+* Deprecated metrics are removed.
+* Metrics without description are removed, since when the output is generated for Prometheus the process fails as it does not take into account that the description can be empty
+* Metrics of numeric type return their value directly.
+* Metrics of type LEVEL return 0 as a result and with a label called level, the value of the level of the metric.
+* The STRING type metrics return a 0 as a result and with a label called value, the value of the metric.
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security

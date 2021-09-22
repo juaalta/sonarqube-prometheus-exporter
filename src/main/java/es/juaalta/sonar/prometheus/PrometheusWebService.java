@@ -17,6 +17,8 @@ import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.Metric;
 import org.sonar.api.resources.Qualifiers;
 import org.sonar.api.server.ws.WebService;
+import org.sonar.api.utils.log.Logger;
+import org.sonar.api.utils.log.Loggers;
 import org.sonarqube.ws.Components;
 import org.sonarqube.ws.Measures;
 import org.sonarqube.ws.client.WsClient;
@@ -64,11 +66,17 @@ public class PrometheusWebService implements WebService {
           && !(x.getKey().equals(CoreMetrics.FILE_COMPLEXITY_DISTRIBUTION_KEY))
           && !(x.getKey().equals(CoreMetrics.DUPLICATIONS_DATA_KEY))
           && !(x.getKey().equals(CoreMetrics.COMMENT_LINES_DATA_KEY))) {
-        SUPPORTED_METRICS.add(x);
+
+        // Erased for failing to output Prometheus, empty description
+        if (x.getDescription() != null) {
+          SUPPORTED_METRICS.add(x);
+        }
       }
     });
 
   }
+
+  private static final Logger LOGGER = Loggers.get(PrometheusWebService.class.getName());
 
   /**
    * @param configuration Configuration
@@ -96,32 +104,107 @@ public class PrometheusWebService implements WebService {
 
         WsClient wsClient = WsClientFactories.getLocal().newClient(request.localConnector());
 
+        LOGGER.info("Start of processing");
+
         List<Components.Component> projects = getProjects(wsClient);
         projects.forEach(project -> {
 
           Measures.ComponentWsResponse wsResponse = getMeasures(wsClient, project);
 
           wsResponse.getComponent().getMeasuresList().forEach(measure -> {
+            try {
 
-            if (this.gauges.containsKey(measure.getMetric())) {
+              if (this.gauges.containsKey(measure.getMetric())) {
 
-              this.gauges.get(measure.getMetric()).labels(project.getKey(), project.getName())
-                  .set(Double.valueOf(measure.getValue()));
+                LOGGER.info("Metric data ************");
+                LOGGER.info("metric: " + measure.getMetric());
+                LOGGER.info("fields: " + measure.getAllFields());
+
+                Metric obtainedMetric = CoreMetrics.getMetric(measure.getMetric());
+
+                LOGGER.info("type: " + obtainedMetric.getType().toString());
+                LOGGER.info("is numeric type: " + obtainedMetric.isNumericType());
+                LOGGER.info("is Percentage type: " + obtainedMetric.isPercentageType());
+                LOGGER.info("is data type: " + obtainedMetric.isDataType());
+                LOGGER.info("is optimized best value: " + obtainedMetric.isOptimizedBestValue());
+
+                if (obtainedMetric.isNumericType() || obtainedMetric.isPercentageType()) {
+                  this.gauges.get(measure.getMetric())
+                      .labels(project.getKey(), project.getName(), obtainedMetric.getDomain())
+                      .set(getDoubleValue(measure.getValue()));
+                } else if (obtainedMetric.isDataType()) {
+                  LOGGER.info(measure.getMetric());
+                  LOGGER.info(obtainedMetric.getType().toString());
+                  LOGGER.info(measure.getValue());
+                  this.gauges.get(measure.getMetric())
+                      .labels(project.getKey(), project.getName(), obtainedMetric.getDomain()).set(0);
+                } else {
+
+                  switch (obtainedMetric.getType()) {
+                    case LEVEL:
+                      this.gauges.get(measure.getMetric())
+                          .labels(project.getKey(), project.getName(), obtainedMetric.getDomain(), measure.getValue())
+                          .set(0);
+                      break;
+                    case STRING:
+                      this.gauges.get(measure.getMetric())
+                          .labels(project.getKey(), project.getName(), obtainedMetric.getDomain(), measure.getValue())
+                          .set(0);
+                      break;
+                    default:
+                      LOGGER.info(measure.getMetric());
+                      LOGGER.info(obtainedMetric.getType().toString());
+                      LOGGER.info(measure.getValue());
+                      LOGGER.info("DEFAULT #######");
+                      this.gauges.get(measure.getMetric())
+                          .labels(project.getKey(), project.getName(), obtainedMetric.getDomain())
+                          .set(getDoubleValue(measure.getValue()));
+                      break;
+                  }
+                }
+
+              }
+
+            } catch (Exception e) {
+              LOGGER.error("Error processing metric: " + measure.getMetric(), e);
             }
           });
         });
       }
+
+      LOGGER.info("End of processing");
 
       OutputStream output = response.stream().setMediaType(TextFormat.CONTENT_TYPE_004).setStatus(200).output();
 
       try (OutputStreamWriter writer = new OutputStreamWriter(output)) {
 
         TextFormat.write004(writer, CollectorRegistry.defaultRegistry.metricFamilySamples());
+
+      } catch (Exception e) {
+        LOGGER.error("Error writing: ", e);
       }
 
     });
 
     controller.done();
+
+  }
+
+  /**
+   * Get the Double value from a string.
+   *
+   * @param strValue string to convert to double
+   * @return Double with the value of strValue.
+   */
+  private Double getDoubleValue(String strValue) {
+
+    Double value;
+    if (!"".equals(strValue)) {
+      value = Double.valueOf(strValue);
+    } else {
+      value = Double.valueOf(0);
+    }
+    return value;
   }
 
   private void updateEnabledMetrics() {
@@ -140,8 +223,34 @@ public class PrometheusWebService implements WebService {
 
     CollectorRegistry.defaultRegistry.clear();
 
-    this.enabledMetrics.forEach(metric -> this.gauges.put(metric.getKey(), Gauge.build()
-        .name(METRIC_PREFIX + metric.getKey()).help(metric.getDescription()).labelNames("key", "name").register()));
+    this.enabledMetrics.forEach(metric -> {
+
+      if (metric.isNumericType() || metric.isPercentageType()) {
+        this.gauges.put(metric.getKey(), Gauge.build().name(METRIC_PREFIX + metric.getKey())
+            .help(metric.getDescription()).labelNames("key", "name", "domain").register());
+      } else if (metric.isDataType()) {
+        this.gauges.put(metric.getKey(), Gauge.build().name(METRIC_PREFIX + metric.getKey())
+            .help(metric.getDescription()).labelNames("key", "name", "domain").register());
+      } else {
+
+        switch (metric.getType()) {
+          case LEVEL:
+            this.gauges.put(metric.getKey(), Gauge.build().name(METRIC_PREFIX + metric.getKey())
+                .help(metric.getDescription()).labelNames("key", "name", "domain", "level").register());
+            break;
+          case STRING:
+            this.gauges.put(metric.getKey(), Gauge.build().name(METRIC_PREFIX + metric.getKey())
+                .help(metric.getDescription()).labelNames("key", "name", "domain", "value").register());
+            break;
+          default:
+            this.gauges.put(metric.getKey(), Gauge.build().name(METRIC_PREFIX + metric.getKey())
+                .help(metric.getDescription()).labelNames("key", "name", "domain").register());
+            break;
+        }
+
+      }
+
+    });
   }
 
   private Measures.ComponentWsResponse getMeasures(WsClient wsClient, Components.Component project) {
