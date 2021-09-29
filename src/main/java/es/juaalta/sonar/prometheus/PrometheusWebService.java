@@ -116,17 +116,17 @@ public class PrometheusWebService implements WebService {
 
               if (this.gauges.containsKey(measure.getMetric())) {
 
-                LOGGER.info("Metric data ************");
-                LOGGER.info("metric: " + measure.getMetric());
-                LOGGER.info("fields: " + measure.getAllFields());
+                // LOGGER.info("Metric data ************");
+                // LOGGER.info("metric: " + measure.getMetric());
+                // LOGGER.info("fields: " + measure.getAllFields());
 
                 Metric obtainedMetric = CoreMetrics.getMetric(measure.getMetric());
 
                 LOGGER.info("type: " + obtainedMetric.getType().toString());
-                LOGGER.info("is numeric type: " + obtainedMetric.isNumericType());
-                LOGGER.info("is Percentage type: " + obtainedMetric.isPercentageType());
-                LOGGER.info("is data type: " + obtainedMetric.isDataType());
-                LOGGER.info("is optimized best value: " + obtainedMetric.isOptimizedBestValue());
+                // LOGGER.info("is numeric type: " + obtainedMetric.isNumericType());
+                // LOGGER.info("is Percentage type: " + obtainedMetric.isPercentageType());
+                // LOGGER.info("is data type: " + obtainedMetric.isDataType());
+                // LOGGER.info("is optimized best value: " + obtainedMetric.isOptimizedBestValue());
 
                 if (obtainedMetric.isNumericType() || obtainedMetric.isPercentageType()) {
                   this.gauges.get(measure.getMetric())
