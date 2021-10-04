@@ -15,8 +15,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * Metrics of numeric type return their value directly.
 * Metrics of type LEVEL return 0 as a result and with a label called level, the value of the level of the metric.
 * The STRING type metrics return a 0 as a result and with a label called value, the value of the metric.
+* Added docker composition file to be able to test plugin. 
+* Added configuration files for the correct operation of Prometheus and Grafana.
+* Moved the example dashboard within the Grafana folders, to be able to see how it works.
 
 ### Changed
+
 
 ### Deprecated
 
