@@ -26,6 +26,7 @@ import org.sonarqube.ws.client.WsClientFactories;
 import org.sonarqube.ws.client.components.SearchRequest;
 import org.sonarqube.ws.client.measures.ComponentRequest;
 
+import es.juaalta.sonar.prometheus.utils.ConvertUtils;
 import io.prometheus.client.CollectorRegistry;
 import io.prometheus.client.Gauge;
 import io.prometheus.client.exporter.common.TextFormat;
@@ -131,7 +132,7 @@ public class PrometheusWebService implements WebService {
                 if (obtainedMetric.isNumericType() || obtainedMetric.isPercentageType()) {
                   this.gauges.get(measure.getMetric())
                       .labels(project.getKey(), project.getName(), obtainedMetric.getDomain())
-                      .set(getDoubleValue(measure.getValue()));
+                      .set(ConvertUtils.getDoubleValue(measure.getValue()));
                 } else if (obtainedMetric.isDataType()) {
                   LOGGER.info(measure.getMetric());
                   LOGGER.info(obtainedMetric.getType().toString());
@@ -158,7 +159,7 @@ public class PrometheusWebService implements WebService {
                       LOGGER.info("DEFAULT #######");
                       this.gauges.get(measure.getMetric())
                           .labels(project.getKey(), project.getName(), obtainedMetric.getDomain())
-                          .set(getDoubleValue(measure.getValue()));
+                          .set(ConvertUtils.getDoubleValue(measure.getValue()));
                       break;
                   }
                 }
@@ -188,23 +189,6 @@ public class PrometheusWebService implements WebService {
 
     controller.done();
 
-  }
-
-  /**
-   * Get the Double value from a string.
-   *
-   * @param strValue string to convert to double
-   * @return Double with the value of strValue.
-   */
-  private Double getDoubleValue(String strValue) {
-
-    Double value;
-    if (!"".equals(strValue)) {
-      value = Double.valueOf(strValue);
-    } else {
-      value = Double.valueOf(0);
-    }
-    return value;
   }
 
   private void updateEnabledMetrics() {

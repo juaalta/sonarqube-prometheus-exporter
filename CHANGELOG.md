@@ -6,7 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-
 ### Added
 
 * The metrics are obtained from the list of metrics that the SonarQube has internally.
@@ -18,6 +17,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * Added docker composition file to be able to test plugin. 
 * Added configuration files for the correct operation of Prometheus and Grafana.
 * Moved the example dashboard within the Grafana folders, to be able to see how it works.
+* Added a test.
+* Added Jacoco for code coverage.
 
 ### Changed
 
