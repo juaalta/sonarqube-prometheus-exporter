@@ -9,7 +9,7 @@ class ConvertUtilsTest {
   @Test
   void getDoubleValueTest() {
 
-    Double resultVal = new Double(5.0);
+    Double resultVal = Double.valueOf(5.0);
     String strVal = "5.0";
 
     assertEquals(resultVal, ConvertUtils.getDoubleValue(strVal));
