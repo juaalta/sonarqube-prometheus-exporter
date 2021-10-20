@@ -22,6 +22,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 
+* Moved to the images folder, to be better organized files.
+* Updated Grafana images.
 
 ### Deprecated
 
