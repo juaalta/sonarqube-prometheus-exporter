@@ -89,6 +89,8 @@ The previous steps to be able to test the plugin are the following:
 
 To run the test, you must enter the docker folder and execute the following command: `docker-compose up -d` or` docker compose up -d`, depending on the docker-compose installation performed.
 
+To stop the test, you must enter the docker folder and execute the following command: `docker-compose down` or` docker compose down`, depending on the docker-compose installation performed.
+
 Access to the applications is as follows:
 
 * Sonarqube: http://localhost:9000/projects
