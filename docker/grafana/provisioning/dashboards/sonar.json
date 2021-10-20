@@ -21,7 +21,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1633455441696,
+  "iteration": 1634762722052,
   "links": [],
   "panels": [
     {
@@ -41,11 +41,15 @@
     {
       "cacheTimeout": null,
       "datasource": "Prometheus",
-      "description": "",
+      "description": "The project status with regard to its quality gate.",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "displayMode": "auto"
           },
           "mappings": [],
           "thresholds": {
@@ -63,132 +67,100 @@
           },
           "unit": "none"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "level"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "color-text"
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "ERROR": {
+                        "color": "red",
+                        "index": 1
+                      },
+                      "OK": {
+                        "color": "green",
+                        "index": 0
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
-        "h": 4,
-        "w": 4,
+        "h": 12,
+        "w": 8,
         "x": 0,
         "y": 1
       },
-      "id": 4,
+      "id": 106,
       "interval": null,
       "links": [],
       "maxDataPoints": 100,
       "options": {
-        "colorMode": "background",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "text": {},
-        "textMode": "auto"
+        "showHeader": true
       },
       "pluginVersion": "8.1.5",
-      "repeat": null,
       "repeatDirection": "v",
       "targets": [
         {
           "exemplar": true,
-          "expr": "sum(sonarqube_bugs{name=~\"$projectName\"})",
-          "format": "time_series",
+          "expr": "sonarqube_alert_status{name=~\"$projectName\"}",
+          "format": "table",
           "hide": false,
+          "instant": true,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "{{name}}",
+          "legendFormat": "",
           "refId": "A"
         }
       ],
-      "title": "Bugs",
-      "type": "stat"
-    },
-    {
-      "cacheTimeout": null,
-      "datasource": "Prometheus",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [
-            {
-              "options": {
-                "match": "null",
-                "result": {
-                  "text": "N/A"
-                }
-              },
-              "type": "special"
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "#299c46",
-                "value": null
-              },
-              {
-                "color": "rgba(237, 129, 40, 0.89)",
-                "value": 1
-              },
-              {
-                "color": "#d44a3a",
-                "value": 10
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 4,
-        "x": 4,
-        "y": 1
-      },
-      "id": 5,
-      "interval": null,
-      "links": [],
-      "maxDataPoints": 100,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "text": {},
-        "textMode": "auto"
-      },
-      "pluginVersion": "8.1.5",
-      "repeat": null,
-      "repeatDirection": "h",
-      "targets": [
+      "title": "Alert Status",
+      "transformations": [
         {
-          "exemplar": true,
-          "expr": "sum(sonarqube_vulnerabilities{name=~\"$projectName\"})",
-          "format": "time_series",
-          "interval": "",
-          "intervalFactor": 1,
-          "legendFormat": "{{name}}",
-          "refId": "A"
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "Value": true,
+              "__name__": true,
+              "domain": true,
+              "instance": true,
+              "job": true,
+              "key": true
+            },
+            "indexByName": {
+              "Time": 0,
+              "Value": 8,
+              "__name__": 1,
+              "domain": 2,
+              "instance": 3,
+              "job": 4,
+              "key": 5,
+              "level": 7,
+              "name": 6
+            },
+            "renameByName": {
+              "level": "Alert Level",
+              "name": "Porject Name"
+            }
+          }
         }
       ],
-      "title": "Vulnerabilities",
-      "type": "stat"
+      "type": "table"
     },
     {
       "cacheTimeout": null,
@@ -503,154 +475,6 @@
     {
       "cacheTimeout": null,
       "datasource": "Prometheus",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [
-            {
-              "options": {
-                "match": "null",
-                "result": {
-                  "text": "N/A"
-                }
-              },
-              "type": "special"
-            }
-          ],
-          "thresholds": {
-            "mode": "percentage",
-            "steps": [
-              {
-                "color": "#d44a3a",
-                "value": null
-              },
-              {
-                "color": "rgba(237, 129, 40, 0.89)",
-                "value": 25
-              },
-              {
-                "color": "#299c46",
-                "value": 75
-              }
-            ]
-          },
-          "unit": "percent"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 4,
-        "x": 0,
-        "y": 5
-      },
-      "id": 57,
-      "interval": null,
-      "links": [],
-      "maxDataPoints": 100,
-      "options": {
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "last"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showThresholdLabels": false,
-        "showThresholdMarkers": true,
-        "text": {}
-      },
-      "pluginVersion": "8.1.5",
-      "repeatDirection": "h",
-      "targets": [
-        {
-          "exemplar": true,
-          "expr": "avg(sonarqube_branch_coverage{name=~\"$projectName\"})",
-          "format": "time_series",
-          "interval": "",
-          "intervalFactor": 1,
-          "legendFormat": "{{name}}",
-          "refId": "A"
-        }
-      ],
-      "title": "Condition Coverage",
-      "type": "gauge"
-    },
-    {
-      "cacheTimeout": null,
-      "datasource": "Prometheus",
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 4,
-        "x": 4,
-        "y": 5
-      },
-      "id": 58,
-      "interval": null,
-      "links": [],
-      "maxDataPoints": 100,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "last"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "text": {},
-        "textMode": "auto"
-      },
-      "pluginVersion": "8.1.5",
-      "repeatDirection": "v",
-      "targets": [
-        {
-          "exemplar": true,
-          "expr": "sum(sonarqube_test_success_density{name=~\"$projectName\"})",
-          "format": "time_series",
-          "hide": false,
-          "interval": "",
-          "intervalFactor": 1,
-          "legendFormat": "{{name}}",
-          "refId": "A"
-        }
-      ],
-      "title": "Density of successful unit tests",
-      "type": "stat"
-    },
-    {
-      "cacheTimeout": null,
-      "datasource": "Prometheus",
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -952,143 +776,6 @@
       "gridPos": {
         "h": 4,
         "w": 4,
-        "x": 0,
-        "y": 9
-      },
-      "id": 65,
-      "interval": null,
-      "links": [],
-      "maxDataPoints": 100,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "text": {},
-        "textMode": "auto"
-      },
-      "pluginVersion": "8.1.5",
-      "repeatDirection": "v",
-      "targets": [
-        {
-          "exemplar": true,
-          "expr": "sum(sonarqube_reliability_remediation_effort{name=~\"$projectName\"})",
-          "format": "time_series",
-          "hide": false,
-          "interval": "",
-          "intervalFactor": 1,
-          "legendFormat": "{{name}}",
-          "refId": "A"
-        }
-      ],
-      "title": "Reliability Remediation Effort",
-      "type": "stat"
-    },
-    {
-      "cacheTimeout": null,
-      "datasource": "Prometheus",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 4,
-        "x": 4,
-        "y": 9
-      },
-      "id": 67,
-      "interval": null,
-      "links": [],
-      "maxDataPoints": 100,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "text": {},
-        "textMode": "auto"
-      },
-      "pluginVersion": "8.1.5",
-      "repeatDirection": "v",
-      "targets": [
-        {
-          "exemplar": true,
-          "expr": "sum(sonarqube_reopened_issues{name=~\"$projectName\"})",
-          "format": "time_series",
-          "hide": false,
-          "interval": "",
-          "intervalFactor": 1,
-          "legendFormat": "{{name}}",
-          "refId": "A"
-        }
-      ],
-      "title": "Reopened Issues",
-      "type": "stat"
-    },
-    {
-      "cacheTimeout": null,
-      "datasource": "Prometheus",
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 4,
         "x": 8,
         "y": 9
       },
@@ -1350,7 +1037,7 @@
     {
       "cacheTimeout": null,
       "datasource": "Prometheus",
-      "description": "Duplicated lines balanced by statements",
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1380,7 +1067,7 @@
         "x": 0,
         "y": 13
       },
-      "id": 74,
+      "id": 4,
       "interval": null,
       "links": [],
       "maxDataPoints": 100,
@@ -1391,7 +1078,7 @@
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
-            "last"
+            "lastNotNull"
           ],
           "fields": "",
           "values": false
@@ -1400,11 +1087,12 @@
         "textMode": "auto"
       },
       "pluginVersion": "8.1.5",
+      "repeat": null,
       "repeatDirection": "v",
       "targets": [
         {
           "exemplar": true,
-          "expr": "sum(sonarqube_duplicated_lines_density{name=~\"$projectName\"})",
+          "expr": "sum(sonarqube_bugs{name=~\"$projectName\"})",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -1413,29 +1101,42 @@
           "refId": "A"
         }
       ],
-      "title": "Duplicated lines density",
+      "title": "Bugs",
       "type": "stat"
     },
     {
       "cacheTimeout": null,
       "datasource": "Prometheus",
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "thresholds"
           },
-          "mappings": [],
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "#299c46",
                 "value": null
               },
               {
-                "color": "red",
-                "value": 80
+                "color": "rgba(237, 129, 40, 0.89)",
+                "value": 1
+              },
+              {
+                "color": "#d44a3a",
+                "value": 10
               }
             ]
           },
@@ -1449,7 +1150,7 @@
         "x": 4,
         "y": 13
       },
-      "id": 75,
+      "id": 5,
       "interval": null,
       "links": [],
       "maxDataPoints": 100,
@@ -1457,10 +1158,10 @@
         "colorMode": "background",
         "graphMode": "none",
         "justifyMode": "auto",
-        "orientation": "horizontal",
+        "orientation": "auto",
         "reduceOptions": {
           "calcs": [
-            "last"
+            "lastNotNull"
           ],
           "fields": "",
           "values": false
@@ -1469,20 +1170,20 @@
         "textMode": "auto"
       },
       "pluginVersion": "8.1.5",
-      "repeatDirection": "v",
+      "repeat": null,
+      "repeatDirection": "h",
       "targets": [
         {
           "exemplar": true,
-          "expr": "sum(sonarqube_conditions_to_cover{name=~\"$projectName\"})",
+          "expr": "sum(sonarqube_vulnerabilities{name=~\"$projectName\"})",
           "format": "time_series",
-          "hide": false,
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "{{name}}",
           "refId": "A"
         }
       ],
-      "title": "Conditions to cover",
+      "title": "Vulnerabilities",
       "type": "stat"
     },
     {
@@ -1764,26 +1465,35 @@
     {
       "cacheTimeout": null,
       "datasource": "Prometheus",
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "thresholds"
           },
-          "mappings": [],
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
           "thresholds": {
             "mode": "percentage",
             "steps": [
               {
-                "color": "red",
+                "color": "#d44a3a",
                 "value": null
               },
               {
-                "color": "#EAB839",
+                "color": "rgba(237, 129, 40, 0.89)",
                 "value": 25
               },
               {
-                "color": "green",
+                "color": "#299c46",
                 "value": 75
               }
             ]
@@ -1798,7 +1508,7 @@
         "x": 0,
         "y": 17
       },
-      "id": 86,
+      "id": 57,
       "interval": null,
       "links": [],
       "maxDataPoints": 100,
@@ -1816,20 +1526,19 @@
         "text": {}
       },
       "pluginVersion": "8.1.5",
-      "repeatDirection": "v",
+      "repeatDirection": "h",
       "targets": [
         {
           "exemplar": true,
-          "expr": "avg(sonarqube_line_coverage{name=~\"$projectName\"})",
+          "expr": "avg(sonarqube_branch_coverage{name=~\"$projectName\"})",
           "format": "time_series",
-          "hide": false,
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "{{name}}",
           "refId": "A"
         }
       ],
-      "title": "Line Coverage",
+      "title": "Condition Coverage",
       "type": "gauge"
     },
     {
@@ -1865,7 +1574,7 @@
         "x": 4,
         "y": 17
       },
-      "id": 87,
+      "id": 58,
       "interval": null,
       "links": [],
       "maxDataPoints": 100,
@@ -1889,7 +1598,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "sum(sonarqube_cognitive_complexity{name=~\"$projectName\"})",
+          "expr": "sum(sonarqube_test_success_density{name=~\"$projectName\"})",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -1898,7 +1607,7 @@
           "refId": "A"
         }
       ],
-      "title": "Cognitive complexity",
+      "title": "Density of successful unit tests",
       "type": "stat"
     },
     {
@@ -2272,7 +1981,7 @@
         "x": 0,
         "y": 21
       },
-      "id": 92,
+      "id": 65,
       "interval": null,
       "links": [],
       "maxDataPoints": 100,
@@ -2283,7 +1992,7 @@
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
-            "last"
+            "lastNotNull"
           ],
           "fields": "",
           "values": false
@@ -2296,7 +2005,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "sum(sonarqube_files{name=~\"$projectName\"})",
+          "expr": "sum(sonarqube_reliability_remediation_effort{name=~\"$projectName\"})",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -2305,13 +2014,12 @@
           "refId": "A"
         }
       ],
-      "title": "Number of files",
+      "title": "Reliability Remediation Effort",
       "type": "stat"
     },
     {
       "cacheTimeout": null,
       "datasource": "Prometheus",
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -2341,7 +2049,7 @@
         "x": 4,
         "y": 21
       },
-      "id": 94,
+      "id": 67,
       "interval": null,
       "links": [],
       "maxDataPoints": 100,
@@ -2352,7 +2060,7 @@
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
-            "last"
+            "lastNotNull"
           ],
           "fields": "",
           "values": false
@@ -2365,7 +2073,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "sum(sonarqube_generated_ncloc{name=~\"$projectName\"})",
+          "expr": "sum(sonarqube_reopened_issues{name=~\"$projectName\"})",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -2374,7 +2082,7 @@
           "refId": "A"
         }
       ],
-      "title": "Generated non Commenting Lines of Code",
+      "title": "Reopened Issues",
       "type": "stat"
     },
     {
@@ -2656,7 +2364,7 @@
     {
       "cacheTimeout": null,
       "datasource": "Prometheus",
-      "description": "",
+      "description": "Duplicated lines balanced by statements",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -2686,7 +2394,7 @@
         "x": 0,
         "y": 25
       },
-      "id": 102,
+      "id": 74,
       "interval": null,
       "links": [],
       "maxDataPoints": 100,
@@ -2710,7 +2418,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "sum(sonarqube_open_issues{name=~\"$projectName\"})",
+          "expr": "sum(sonarqube_duplicated_lines_density{name=~\"$projectName\"})",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -2719,7 +2427,7 @@
           "refId": "A"
         }
       ],
-      "title": "Open issues",
+      "title": "Duplicated lines density",
       "type": "stat"
     },
     {
@@ -2755,7 +2463,7 @@
         "x": 4,
         "y": 25
       },
-      "id": 104,
+      "id": 75,
       "interval": null,
       "links": [],
       "maxDataPoints": 100,
@@ -2779,7 +2487,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "sum(sonarqube_security_remediation_effort{name=~\"$projectName\"})",
+          "expr": "sum(sonarqube_conditions_to_cover{name=~\"$projectName\"})",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -2788,7 +2496,7 @@
           "refId": "A"
         }
       ],
-      "title": "Security remediation effort",
+      "title": "Conditions to cover",
       "type": "stat"
     },
     {
@@ -2863,7 +2571,7 @@
     {
       "cacheTimeout": null,
       "datasource": "Prometheus",
-      "description": "The project status with regard to its quality gate.",
+      "description": "Number of skipped unit tests",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -2893,7 +2601,7 @@
         "x": 12,
         "y": 25
       },
-      "id": 106,
+      "id": 116,
       "interval": null,
       "links": [],
       "maxDataPoints": 100,
@@ -2910,23 +2618,23 @@
           "values": false
         },
         "text": {},
-        "textMode": "name"
+        "textMode": "auto"
       },
       "pluginVersion": "8.1.5",
       "repeatDirection": "v",
       "targets": [
         {
           "exemplar": true,
-          "expr": "sonarqube_alert_status{name=~\"$projectName\"}",
+          "expr": "sum(sonarqube_skipped_tests{name=~\"$projectName\"})",
           "format": "time_series",
           "hide": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "{{name}} - {{level}}",
+          "legendFormat": "{{name}}",
           "refId": "A"
         }
       ],
-      "title": "Alert Status",
+      "title": "Skipped tests",
       "type": "stat"
     },
     {
@@ -3109,15 +2817,19 @@
           },
           "mappings": [],
           "thresholds": {
-            "mode": "absolute",
+            "mode": "percentage",
             "steps": [
               {
-                "color": "green",
+                "color": "red",
                 "value": null
               },
               {
-                "color": "red",
-                "value": 80
+                "color": "#EAB839",
+                "value": 25
+              },
+              {
+                "color": "green",
+                "value": 75
               }
             ]
           },
@@ -3131,14 +2843,11 @@
         "x": 0,
         "y": 29
       },
-      "id": 111,
+      "id": 86,
       "interval": null,
       "links": [],
       "maxDataPoints": 100,
       "options": {
-        "colorMode": "background",
-        "graphMode": "none",
-        "justifyMode": "auto",
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
@@ -3147,15 +2856,16 @@
           "fields": "",
           "values": false
         },
-        "text": {},
-        "textMode": "auto"
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "text": {}
       },
       "pluginVersion": "8.1.5",
       "repeatDirection": "v",
       "targets": [
         {
           "exemplar": true,
-          "expr": "avg(sonarqube_security_hotspots_reviewed{name=~\"$projectName\"})",
+          "expr": "avg(sonarqube_line_coverage{name=~\"$projectName\"})",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -3164,8 +2874,8 @@
           "refId": "A"
         }
       ],
-      "title": "Percentage of Security Hotspots Reviewed",
-      "type": "stat"
+      "title": "Line Coverage",
+      "type": "gauge"
     },
     {
       "cacheTimeout": null,
@@ -3200,7 +2910,7 @@
         "x": 4,
         "y": 29
       },
-      "id": 112,
+      "id": 87,
       "interval": null,
       "links": [],
       "maxDataPoints": 100,
@@ -3224,7 +2934,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "sum(sonarqube_statements{name=~\"$projectName\"})",
+          "expr": "sum(sonarqube_cognitive_complexity{name=~\"$projectName\"})",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -3233,7 +2943,7 @@
           "refId": "A"
         }
       ],
-      "title": "Number of statements",
+      "title": "Cognitive complexity",
       "type": "stat"
     },
     {
@@ -3308,7 +3018,7 @@
     {
       "cacheTimeout": null,
       "datasource": "Prometheus",
-      "description": "Number of skipped unit tests",
+      "description": "Non commenting lines of code",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -3338,7 +3048,7 @@
         "x": 12,
         "y": 29
       },
-      "id": 116,
+      "id": 125,
       "interval": null,
       "links": [],
       "maxDataPoints": 100,
@@ -3362,7 +3072,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "sum(sonarqube_skipped_tests{name=~\"$projectName\"})",
+          "expr": "sum(sonarqube_ncloc{name=~\"$projectName\"})",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -3371,7 +3081,7 @@
           "refId": "A"
         }
       ],
-      "title": "Skipped tests",
+      "title": "Non commenting lines of code",
       "type": "stat"
     },
     {
@@ -3515,7 +3225,7 @@
     {
       "cacheTimeout": null,
       "datasource": "Prometheus",
-      "description": "Cyclomatic complexity",
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -3545,7 +3255,7 @@
         "x": 0,
         "y": 33
       },
-      "id": 120,
+      "id": 92,
       "interval": null,
       "links": [],
       "maxDataPoints": 100,
@@ -3569,7 +3279,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "sum(sonarqube_complexity{name=~\"$projectName\"})",
+          "expr": "sum(sonarqube_files{name=~\"$projectName\"})",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -3578,13 +3288,13 @@
           "refId": "A"
         }
       ],
-      "title": "Cyclomatic complexity",
+      "title": "Number of files",
       "type": "stat"
     },
     {
       "cacheTimeout": null,
       "datasource": "Prometheus",
-      "description": "Coverage by tests",
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -3614,7 +3324,7 @@
         "x": 4,
         "y": 33
       },
-      "id": 121,
+      "id": 94,
       "interval": null,
       "links": [],
       "maxDataPoints": 100,
@@ -3638,7 +3348,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "sum(sonarqube_uncovered_lines{name=~\"$projectName\"})",
+          "expr": "sum(sonarqube_generated_ncloc{name=~\"$projectName\"})",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -3647,7 +3357,7 @@
           "refId": "A"
         }
       ],
-      "title": "Uncovered lines",
+      "title": "Generated non Commenting Lines of Code",
       "type": "stat"
     },
     {
@@ -3722,7 +3432,7 @@
     {
       "cacheTimeout": null,
       "datasource": "Prometheus",
-      "description": "Non commenting lines of code",
+      "description": "False positive issues",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -3752,7 +3462,7 @@
         "x": 12,
         "y": 33
       },
-      "id": 125,
+      "id": 132,
       "interval": null,
       "links": [],
       "maxDataPoints": 100,
@@ -3776,7 +3486,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "sum(sonarqube_ncloc{name=~\"$projectName\"})",
+          "expr": "sum(sonarqube_false_positive_issues{name=~\"$projectName\"})",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -3785,7 +3495,7 @@
           "refId": "A"
         }
       ],
-      "title": "Non commenting lines of code",
+      "title": "False positive issues",
       "type": "stat"
     },
     {
@@ -3959,7 +3669,7 @@
         "x": 0,
         "y": 37
       },
-      "id": 128,
+      "id": 102,
       "interval": null,
       "links": [],
       "maxDataPoints": 100,
@@ -3983,7 +3693,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "sum(sonarqube_classes{name=~\"$projectName\"})",
+          "expr": "sum(sonarqube_open_issues{name=~\"$projectName\"})",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -3992,7 +3702,7 @@
           "refId": "A"
         }
       ],
-      "title": "Classes",
+      "title": "Open issues",
       "type": "stat"
     },
     {
@@ -4028,7 +3738,7 @@
         "x": 4,
         "y": 37
       },
-      "id": 129,
+      "id": 104,
       "interval": null,
       "links": [],
       "maxDataPoints": 100,
@@ -4052,7 +3762,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "sum(sonarqube_lines{name=~\"$projectName\"})",
+          "expr": "sum(sonarqube_security_remediation_effort{name=~\"$projectName\"})",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -4061,7 +3771,7 @@
           "refId": "A"
         }
       ],
-      "title": "Lines",
+      "title": "Security remediation effort",
       "type": "stat"
     },
     {
@@ -4136,7 +3846,7 @@
     {
       "cacheTimeout": null,
       "datasource": "Prometheus",
-      "description": "False positive issues",
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -4166,7 +3876,7 @@
         "x": 12,
         "y": 37
       },
-      "id": 132,
+      "id": 136,
       "interval": null,
       "links": [],
       "maxDataPoints": 100,
@@ -4190,7 +3900,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "sum(sonarqube_false_positive_issues{name=~\"$projectName\"})",
+          "expr": "sum(sonarqube_uncovered_conditions{name=~\"$projectName\"})",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -4199,7 +3909,7 @@
           "refId": "A"
         }
       ],
-      "title": "False positive issues",
+      "title": "Uncovered conditions",
       "type": "stat"
     },
     {
@@ -4225,7 +3935,7 @@
               }
             ]
           },
-          "unit": "none"
+          "unit": "s"
         },
         "overrides": []
       },
@@ -4363,7 +4073,7 @@
               }
             ]
           },
-          "unit": "none"
+          "unit": "percent"
         },
         "overrides": []
       },
@@ -4373,7 +4083,7 @@
         "x": 0,
         "y": 41
       },
-      "id": 136,
+      "id": 111,
       "interval": null,
       "links": [],
       "maxDataPoints": 100,
@@ -4397,7 +4107,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "sum(sonarqube_uncovered_conditions{name=~\"$projectName\"})",
+          "expr": "avg(sonarqube_security_hotspots_reviewed{name=~\"$projectName\"})",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -4406,7 +4116,7 @@
           "refId": "A"
         }
       ],
-      "title": "Uncovered conditions",
+      "title": "Percentage of Security Hotspots Reviewed",
       "type": "stat"
     },
     {
@@ -4442,7 +4152,7 @@
         "x": 4,
         "y": 41
       },
-      "id": 137,
+      "id": 112,
       "interval": null,
       "links": [],
       "maxDataPoints": 100,
@@ -4466,7 +4176,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "sum(sonarqube_confirmed_issues{name=~\"$projectName\"})",
+          "expr": "sum(sonarqube_statements{name=~\"$projectName\"})",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -4475,7 +4185,7 @@
           "refId": "A"
         }
       ],
-      "title": "Confirmed issues",
+      "title": "Number of statements",
       "type": "stat"
     },
     {
@@ -4548,13 +4258,358 @@
       "type": "stat"
     },
     {
+      "cacheTimeout": null,
+      "datasource": "Prometheus",
+      "description": "Cyclomatic complexity",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 12,
+        "y": 41
+      },
+      "id": 120,
+      "interval": null,
+      "links": [],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.1.5",
+      "repeatDirection": "v",
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "sum(sonarqube_complexity{name=~\"$projectName\"})",
+          "format": "time_series",
+          "hide": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "{{name}}",
+          "refId": "A"
+        }
+      ],
+      "title": "Cyclomatic complexity",
+      "type": "stat"
+    },
+    {
+      "cacheTimeout": null,
+      "datasource": "Prometheus",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 16,
+        "y": 41
+      },
+      "id": 129,
+      "interval": null,
+      "links": [],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.1.5",
+      "repeatDirection": "v",
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "sum(sonarqube_lines{name=~\"$projectName\"})",
+          "format": "time_series",
+          "hide": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "{{name}}",
+          "refId": "A"
+        }
+      ],
+      "title": "Lines",
+      "type": "stat"
+    },
+    {
+      "cacheTimeout": null,
+      "datasource": "Prometheus",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 20,
+        "y": 41
+      },
+      "id": 137,
+      "interval": null,
+      "links": [],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.1.5",
+      "repeatDirection": "v",
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "sum(sonarqube_confirmed_issues{name=~\"$projectName\"})",
+          "format": "time_series",
+          "hide": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "{{name}}",
+          "refId": "A"
+        }
+      ],
+      "title": "Confirmed issues",
+      "type": "stat"
+    },
+    {
+      "cacheTimeout": null,
+      "datasource": "Prometheus",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 0,
+        "y": 45
+      },
+      "id": 128,
+      "interval": null,
+      "links": [],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.1.5",
+      "repeatDirection": "v",
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "sum(sonarqube_classes{name=~\"$projectName\"})",
+          "format": "time_series",
+          "hide": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "{{name}}",
+          "refId": "A"
+        }
+      ],
+      "title": "Classes",
+      "type": "stat"
+    },
+    {
+      "cacheTimeout": null,
+      "datasource": "Prometheus",
+      "description": "Coverage by tests",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 4,
+        "y": 45
+      },
+      "id": 121,
+      "interval": null,
+      "links": [],
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.1.5",
+      "repeatDirection": "v",
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "sum(sonarqube_uncovered_lines{name=~\"$projectName\"})",
+          "format": "time_series",
+          "hide": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "{{name}}",
+          "refId": "A"
+        }
+      ],
+      "title": "Uncovered lines",
+      "type": "stat"
+    },
+    {
       "collapsed": true,
       "datasource": null,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 45
+        "y": 49
       },
       "id": 50,
       "panels": [],
@@ -4606,7 +4661,7 @@
         "h": 4,
         "w": 4,
         "x": 0,
-        "y": 46
+        "y": 50
       },
       "id": 32,
       "interval": null,
@@ -4674,7 +4729,7 @@
         "h": 4,
         "w": 4,
         "x": 4,
-        "y": 46
+        "y": 50
       },
       "id": 68,
       "interval": null,
@@ -4756,7 +4811,7 @@
         "h": 4,
         "w": 4,
         "x": 8,
-        "y": 46
+        "y": 50
       },
       "id": 59,
       "interval": null,
@@ -4821,7 +4876,7 @@
         "h": 4,
         "w": 4,
         "x": 12,
-        "y": 46
+        "y": 50
       },
       "id": 61,
       "interval": null,
@@ -4889,7 +4944,7 @@
         "h": 4,
         "w": 4,
         "x": 16,
-        "y": 46
+        "y": 50
       },
       "id": 66,
       "interval": null,
@@ -4957,7 +5012,7 @@
         "h": 4,
         "w": 4,
         "x": 20,
-        "y": 46
+        "y": 50
       },
       "id": 70,
       "interval": null,
@@ -5040,7 +5095,7 @@
         "h": 4,
         "w": 4,
         "x": 0,
-        "y": 50
+        "y": 54
       },
       "id": 79,
       "interval": null,
@@ -5123,7 +5178,7 @@
         "h": 4,
         "w": 4,
         "x": 4,
-        "y": 50
+        "y": 54
       },
       "id": 80,
       "interval": null,
@@ -5206,7 +5261,7 @@
         "h": 4,
         "w": 4,
         "x": 8,
-        "y": 50
+        "y": 54
       },
       "id": 81,
       "interval": null,
@@ -5289,7 +5344,7 @@
         "h": 4,
         "w": 4,
         "x": 12,
-        "y": 50
+        "y": 54
       },
       "id": 83,
       "interval": null,
@@ -5372,7 +5427,7 @@
         "h": 4,
         "w": 4,
         "x": 16,
-        "y": 50
+        "y": 54
       },
       "id": 84,
       "interval": null,
@@ -5455,7 +5510,7 @@
         "h": 4,
         "w": 4,
         "x": 20,
-        "y": 50
+        "y": 54
       },
       "id": 85,
       "interval": null,
@@ -5538,7 +5593,7 @@
         "h": 4,
         "w": 4,
         "x": 0,
-        "y": 54
+        "y": 58
       },
       "id": 93,
       "interval": null,
@@ -5621,7 +5676,7 @@
         "h": 4,
         "w": 4,
         "x": 4,
-        "y": 54
+        "y": 58
       },
       "id": 95,
       "interval": null,
@@ -5704,7 +5759,7 @@
         "h": 4,
         "w": 4,
         "x": 8,
-        "y": 54
+        "y": 58
       },
       "id": 99,
       "interval": null,
@@ -5787,7 +5842,7 @@
         "h": 4,
         "w": 4,
         "x": 12,
-        "y": 54
+        "y": 58
       },
       "id": 101,
       "interval": null,
@@ -5870,7 +5925,7 @@
         "h": 4,
         "w": 4,
         "x": 16,
-        "y": 54
+        "y": 58
       },
       "id": 103,
       "interval": null,
@@ -5953,7 +6008,7 @@
         "h": 4,
         "w": 4,
         "x": 20,
-        "y": 54
+        "y": 58
       },
       "id": 109,
       "interval": null,
@@ -6036,7 +6091,7 @@
         "h": 4,
         "w": 4,
         "x": 0,
-        "y": 58
+        "y": 62
       },
       "id": 110,
       "interval": null,
@@ -6119,7 +6174,7 @@
         "h": 4,
         "w": 4,
         "x": 4,
-        "y": 58
+        "y": 62
       },
       "id": 113,
       "interval": null,
@@ -6202,7 +6257,7 @@
         "h": 4,
         "w": 4,
         "x": 8,
-        "y": 58
+        "y": 62
       },
       "id": 114,
       "interval": null,
@@ -6285,7 +6340,7 @@
         "h": 4,
         "w": 4,
         "x": 12,
-        "y": 58
+        "y": 62
       },
       "id": 117,
       "interval": null,
@@ -6368,7 +6423,7 @@
         "h": 4,
         "w": 4,
         "x": 16,
-        "y": 58
+        "y": 62
       },
       "id": 122,
       "interval": null,
@@ -6468,7 +6523,7 @@
         "h": 4,
         "w": 4,
         "x": 20,
-        "y": 58
+        "y": 62
       },
       "id": 124,
       "interval": null,
@@ -6551,7 +6606,7 @@
         "h": 4,
         "w": 4,
         "x": 0,
-        "y": 62
+        "y": 66
       },
       "id": 130,
       "interval": null,
@@ -6634,7 +6689,7 @@
         "h": 4,
         "w": 4,
         "x": 4,
-        "y": 62
+        "y": 66
       },
       "id": 135,
       "interval": null,
@@ -6717,7 +6772,7 @@
         "h": 4,
         "w": 4,
         "x": 8,
-        "y": 62
+        "y": 66
       },
       "id": 138,
       "interval": null,
@@ -6800,7 +6855,7 @@
         "h": 4,
         "w": 4,
         "x": 12,
-        "y": 62
+        "y": 66
       },
       "id": 139,
       "interval": null,
@@ -6883,7 +6938,7 @@
         "h": 4,
         "w": 4,
         "x": 16,
-        "y": 62
+        "y": 66
       },
       "id": 140,
       "interval": null,
@@ -6966,7 +7021,7 @@
         "h": 4,
         "w": 4,
         "x": 20,
-        "y": 62
+        "y": 66
       },
       "id": 142,
       "interval": null,
@@ -7049,7 +7104,7 @@
         "h": 4,
         "w": 4,
         "x": 0,
-        "y": 66
+        "y": 70
       },
       "id": 143,
       "interval": null,
@@ -7132,7 +7187,7 @@
         "h": 4,
         "w": 4,
         "x": 4,
-        "y": 66
+        "y": 70
       },
       "id": 144,
       "interval": null,
@@ -7215,7 +7270,7 @@
         "h": 4,
         "w": 4,
         "x": 8,
-        "y": 66
+        "y": 70
       },
       "id": 145,
       "interval": null,
@@ -7298,7 +7353,7 @@
         "h": 4,
         "w": 4,
         "x": 12,
-        "y": 66
+        "y": 70
       },
       "id": 146,
       "interval": null,
@@ -7343,7 +7398,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 70
+        "y": 74
       },
       "id": 42,
       "panels": [
@@ -7403,7 +7458,7 @@
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 39
+            "y": 75
           },
           "id": 44,
           "options": {
@@ -7411,8 +7466,8 @@
               "calcs": [
                 "last"
               ],
-              "displayMode": "list",
-              "placement": "bottom"
+              "displayMode": "table",
+              "placement": "right"
             },
             "tooltip": {
               "mode": "single"
@@ -7487,7 +7542,7 @@
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 39
+            "y": 75
           },
           "id": 45,
           "options": {
@@ -7495,8 +7550,8 @@
               "calcs": [
                 "last"
               ],
-              "displayMode": "list",
-              "placement": "bottom"
+              "displayMode": "table",
+              "placement": "right"
             },
             "tooltip": {
               "mode": "single"
@@ -7571,7 +7626,7 @@
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 47
+            "y": 83
           },
           "id": 46,
           "options": {
@@ -7579,8 +7634,8 @@
               "calcs": [
                 "last"
               ],
-              "displayMode": "list",
-              "placement": "bottom"
+              "displayMode": "table",
+              "placement": "right"
             },
             "tooltip": {
               "mode": "single"
@@ -7656,7 +7711,7 @@
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 47
+            "y": 83
           },
           "id": 47,
           "options": {
@@ -7664,8 +7719,8 @@
               "calcs": [
                 "last"
               ],
-              "displayMode": "list",
-              "placement": "bottom"
+              "displayMode": "table",
+              "placement": "right"
             },
             "tooltip": {
               "mode": "single"
@@ -7741,7 +7796,7 @@
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 55
+            "y": 91
           },
           "id": 48,
           "options": {
@@ -7749,8 +7804,8 @@
               "calcs": [
                 "last"
               ],
-              "displayMode": "list",
-              "placement": "bottom"
+              "displayMode": "table",
+              "placement": "right"
             },
             "tooltip": {
               "mode": "single"
@@ -7826,7 +7881,7 @@
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 55
+            "y": 91
           },
           "id": 56,
           "options": {
@@ -7834,8 +7889,8 @@
               "calcs": [
                 "last"
               ],
-              "displayMode": "list",
-              "placement": "bottom"
+              "displayMode": "table",
+              "placement": "right"
             },
             "tooltip": {
               "mode": "single"
@@ -7852,6 +7907,100 @@
           ],
           "title": "Major Issues",
           "type": "timeseries"
+        },
+        {
+          "cacheTimeout": null,
+          "datasource": "Prometheus",
+          "description": "Development cost",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "s"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 99
+          },
+          "id": 147,
+          "interval": null,
+          "links": [],
+          "maxDataPoints": 100,
+          "options": {
+            "legend": {
+              "calcs": [
+                "last"
+              ],
+              "displayMode": "table",
+              "placement": "right"
+            },
+            "tooltip": {
+              "mode": "single"
+            }
+          },
+          "pluginVersion": "8.1.5",
+          "repeatDirection": "v",
+          "targets": [
+            {
+              "exemplar": true,
+              "expr": "sonarqube_development_cost{name=~\"$projectName\"}",
+              "format": "time_series",
+              "hide": false,
+              "interval": "",
+              "intervalFactor": 1,
+              "legendFormat": "{{name}}",
+              "refId": "A"
+            }
+          ],
+          "title": "Development cost",
+          "type": "timeseries"
         }
       ],
       "title": "Graphs",
@@ -7864,7 +8013,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 71
+        "y": 75
       },
       "id": 52,
       "panels": [
@@ -7925,7 +8074,7 @@
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 40
+            "y": 108
           },
           "id": 53,
           "options": {
@@ -7933,8 +8082,8 @@
               "calcs": [
                 "last"
               ],
-              "displayMode": "list",
-              "placement": "bottom"
+              "displayMode": "table",
+              "placement": "right"
             },
             "tooltip": {
               "mode": "single"
@@ -8009,7 +8158,7 @@
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 40
+            "y": 108
           },
           "id": 54,
           "options": {
@@ -8017,8 +8166,8 @@
               "calcs": [
                 "last"
               ],
-              "displayMode": "list",
-              "placement": "bottom"
+              "displayMode": "table",
+              "placement": "right"
             },
             "tooltip": {
               "mode": "single"
@@ -8115,5 +8264,5 @@
   "timezone": "",
   "title": "SonarQube",
   "uid": "CQOAq6Smk",
-  "version": 11
+  "version": 2
 }
