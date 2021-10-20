@@ -21,13 +21,32 @@ public class ConvertUtils {
    */
   public static Double getDoubleValue(String strValue) {
 
-    Double value;
-    if (!"".equals(strValue)) {
+    Double value = Double.valueOf(0);
+    if ((strValue != null) && (ConvertUtils.isNumeric(strValue)) && (!"".equals(strValue))) {
       value = Double.valueOf(strValue);
-    } else {
-      value = Double.valueOf(0);
     }
     return value;
+  }
+
+  /**
+   *
+   * If these method don't throw any NumberFormatException, then it means that the parsing was successful and the String
+   * is numeric
+   *
+   * @param strNum String to test
+   * @return If the string is a number.
+   */
+  public static boolean isNumeric(String strNum) {
+
+    if (strNum == null) {
+      return false;
+    }
+    try {
+      Double.parseDouble(strNum);
+    } catch (NumberFormatException nfe) {
+      return false;
+    }
+    return true;
   }
 
 }

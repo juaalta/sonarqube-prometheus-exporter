@@ -148,9 +148,13 @@ public class PrometheusWebService implements WebService {
                           .set(0);
                       break;
                     case STRING:
+                      Double value = 0.0;
+                      if (ConvertUtils.isNumeric(measure.getValue())) {
+                        value = ConvertUtils.getDoubleValue(measure.getValue());
+                      }
                       this.gauges.get(measure.getMetric())
                           .labels(project.getKey(), project.getName(), obtainedMetric.getDomain(), measure.getValue())
-                          .set(0);
+                          .set(value);
                       break;
                     default:
                       LOGGER.info(measure.getMetric());
