@@ -12,6 +12,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.sonar.api.config.Configuration;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.Metric;
@@ -117,28 +119,65 @@ public class PrometheusWebService implements WebService {
 
               if (this.gauges.containsKey(measure.getMetric())) {
 
-                // LOGGER.info("Metric data ************");
-                // LOGGER.info("metric: " + measure.getMetric());
-                // LOGGER.info("fields: " + measure.getAllFields());
-
                 Metric obtainedMetric = CoreMetrics.getMetric(measure.getMetric());
-
-                LOGGER.info("type: " + obtainedMetric.getType().toString());
-                // LOGGER.info("is numeric type: " + obtainedMetric.isNumericType());
-                // LOGGER.info("is Percentage type: " + obtainedMetric.isPercentageType());
-                // LOGGER.info("is data type: " + obtainedMetric.isDataType());
-                // LOGGER.info("is optimized best value: " + obtainedMetric.isOptimizedBestValue());
 
                 if (obtainedMetric.isNumericType() || obtainedMetric.isPercentageType()) {
                   this.gauges.get(measure.getMetric())
                       .labels(project.getKey(), project.getName(), obtainedMetric.getDomain())
                       .set(ConvertUtils.getDoubleValue(measure.getValue()));
                 } else if (obtainedMetric.isDataType()) {
-                  LOGGER.info(measure.getMetric());
-                  LOGGER.info(obtainedMetric.getType().toString());
-                  LOGGER.info(measure.getValue());
-                  this.gauges.get(measure.getMetric())
-                      .labels(project.getKey(), project.getName(), obtainedMetric.getDomain()).set(0);
+
+                  switch (measure.getMetric()) {
+                    case CoreMetrics.NCLOC_LANGUAGE_DISTRIBUTION_KEY:
+                      String[] strSplit = measure.getValue().split(";");
+
+                      for (String values : strSplit) {
+
+                        String[] valuesSplit = values.split("=");
+
+                        if (valuesSplit.length == 2) {
+                          this.gauges.get(measure.getMetric())
+                              .labels(project.getKey(), project.getName(), obtainedMetric.getDomain(), valuesSplit[0])
+                              .set(ConvertUtils.getDoubleValue(valuesSplit[1]));
+                        }
+                      }
+                      break;
+                    case CoreMetrics.QUALITY_GATE_DETAILS_KEY:
+
+                      JSONObject valueJSONObject = new JSONObject(measure.getValue());
+                      String global_level = valueJSONObject.getString("level");
+                      JSONArray conditionsJSONArray = valueJSONObject.getJSONArray("conditions");
+
+                      for (int n = 0; n < conditionsJSONArray.length(); n++) {
+                        JSONObject conditionObj = conditionsJSONArray.getJSONObject(n);
+
+                        String metric = conditionObj.getString("metric");
+                        String op = conditionObj.getString("op");
+                        String period = String.valueOf(conditionObj.get("period"));
+                        String error = String.valueOf(conditionObj.get("error"));
+                        String actual = String.valueOf(conditionObj.get("actual"));
+                        String level = conditionObj.getString("level");
+
+                        this.gauges
+                            .get(measure.getMetric()).labels(project.getKey(), project.getName(),
+                                obtainedMetric.getDomain(), global_level, metric, op, period, error, actual, level)
+                            .set(0);
+
+                      }
+
+                      break;
+                    default:
+
+                      LOGGER.info("DEFAULT DATA #######");
+                      LOGGER.info(measure.getMetric());
+                      LOGGER.info(obtainedMetric.getType().toString());
+                      LOGGER.info(measure.getValue());
+
+                      this.gauges.get(measure.getMetric())
+                          .labels(project.getKey(), project.getName(), obtainedMetric.getDomain()).set(0);
+                      break;
+                  }
+
                 } else {
 
                   switch (obtainedMetric.getType()) {
@@ -157,10 +196,10 @@ public class PrometheusWebService implements WebService {
                           .set(value);
                       break;
                     default:
+                      LOGGER.info("DEFAULT #######");
                       LOGGER.info(measure.getMetric());
                       LOGGER.info(obtainedMetric.getType().toString());
                       LOGGER.info(measure.getValue());
-                      LOGGER.info("DEFAULT #######");
                       this.gauges.get(measure.getMetric())
                           .labels(project.getKey(), project.getName(), obtainedMetric.getDomain())
                           .set(ConvertUtils.getDoubleValue(measure.getValue()));
@@ -217,8 +256,25 @@ public class PrometheusWebService implements WebService {
         this.gauges.put(metric.getKey(), Gauge.build().name(METRIC_PREFIX + metric.getKey())
             .help(metric.getDescription()).labelNames("key", "name", "domain").register());
       } else if (metric.isDataType()) {
-        this.gauges.put(metric.getKey(), Gauge.build().name(METRIC_PREFIX + metric.getKey())
-            .help(metric.getDescription()).labelNames("key", "name", "domain").register());
+
+        switch (metric.getKey()) {
+          case CoreMetrics.NCLOC_LANGUAGE_DISTRIBUTION_KEY:
+            this.gauges.put(metric.getKey(), Gauge.build().name(METRIC_PREFIX + metric.getKey())
+                .help(metric.getDescription()).labelNames("key", "name", "domain", "language").register());
+            break;
+          case CoreMetrics.QUALITY_GATE_DETAILS_KEY:
+            this.gauges.put(metric.getKey(),
+                Gauge
+                    .build().name(METRIC_PREFIX + metric.getKey()).help(metric.getDescription()).labelNames("key",
+                        "name", "domain", "global_level", "metric", "op", "period", "error", "actual", "level")
+                    .register());
+            break;
+          default:
+            this.gauges.put(metric.getKey(), Gauge.build().name(METRIC_PREFIX + metric.getKey())
+                .help(metric.getDescription()).labelNames("key", "name", "domain").register());
+            break;
+        }
+
       } else {
 
         switch (metric.getType()) {
