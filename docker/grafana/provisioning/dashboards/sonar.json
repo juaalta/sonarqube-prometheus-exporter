@@ -21,7 +21,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1635200729121,
+  "iteration": 1635439420536,
   "links": [],
   "panels": [
     {
@@ -323,7 +323,7 @@
               "actual": "Actual",
               "error": "Error",
               "global_level": "Global Level",
-              "level": "Alert Level",
+              "level": "Metric Level",
               "metric": "Metric",
               "name": "Porject Name",
               "op": "OP",
@@ -341,26 +341,16 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "mode": "palette-classic"
           },
           "custom": {
-            "align": "auto",
-            "displayMode": "auto"
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
           },
           "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
           "unit": "none"
         },
         "overrides": []
@@ -376,7 +366,28 @@
       "links": [],
       "maxDataPoints": 100,
       "options": {
-        "showHeader": true
+        "displayLabels": [
+          "name",
+          "value"
+        ],
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "values": [
+            "value"
+          ]
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "tooltip": {
+          "mode": "single"
+        }
       },
       "pluginVersion": "8.1.5",
       "repeatDirection": "v",
@@ -384,7 +395,7 @@
         {
           "exemplar": true,
           "expr": "sum(sonarqube_ncloc_language_distribution{name=~\"$projectName\"}) by (language)",
-          "format": "table",
+          "format": "time_series",
           "hide": false,
           "instant": true,
           "interval": "",
@@ -409,7 +420,7 @@
           }
         }
       ],
-      "type": "table"
+      "type": "piechart"
     },
     {
       "cacheTimeout": null,
@@ -8444,5 +8455,5 @@
   "timezone": "",
   "title": "SonarQube",
   "uid": "CQOAq6Smk",
-  "version": 4
+  "version": 6
 }
