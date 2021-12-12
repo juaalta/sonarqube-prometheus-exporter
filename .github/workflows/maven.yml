@@ -21,7 +21,7 @@ jobs:
       with:
         java-version: '11'
         distribution: 'adopt'
-        cache: maven
+#        cache: maven
     - name: Build with Maven
       run: mvn -B clean org.jacoco:jacoco-maven-plugin:prepare-agent install
     - name: Analyse with Sonar
