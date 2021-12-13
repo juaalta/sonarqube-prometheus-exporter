@@ -2,12 +2,12 @@
 <h4 align="center">Prometheus Exporter Plugin for SonarQube.</h4>
 
 <p align="center">
-  <a href="https://travis-ci.com/juaalta/sonarqube-prometheus-exporter">
-    <img src="https://travis-ci.com/juaalta/sonarqube-prometheus-exporter.svg?branch=develop"
+  <a href="https://github.com/juaalta/sonarqube-prometheus-exporter/actions/workflows/maven.yml">
+    <img src="https://github.com/juaalta/sonarqube-prometheus-exporter/actions/workflows/maven.yml/badge.svg"
          alt="Build Status">
   </a>
-  <a href="https://sonarcloud.io/dashboard?id=de.dmeiners%3Asonar-prometheus-exporter">
-    <img src="https://sonarcloud.io/api/project_badges/measure?project=de.dmeiners%3Asonar-prometheus-exporter&metric=alert_status" alt="SonarCloud Analysis">
+  <a href="https://sonarcloud.io/project/overview?id=juaalta_sonarqube-prometheus-exporter">
+    <img src=https://sonarcloud.io/api/project_badges/measure?project=juaalta_sonarqube-prometheus-exporter&metric=alert_status" alt="SonarCloud Analysis">
   </a>
   <a href="https://github.com/juaalta/sonarqube-prometheus-exporter/releases">
     <img src="https://img.shields.io/github/release/juaalta/sonarqube-prometheus-exporter.svg" alt="Download">
