@@ -3,8 +3,7 @@
 
 <p align="center">
   <a href="https://github.com/juaalta/sonarqube-prometheus-exporter/actions/workflows/maven.yml">
-    <img src="https://github.com/juaalta/sonarqube-prometheus-exporter/actions/workflows/maven.yml/badge.svg"
-         alt="Build Status">
+    <img src="https://github.com/juaalta/sonarqube-prometheus-exporter/actions/workflows/maven.yml/badge.svg" alt="Build Status">
   </a>
   <a href="https://sonarcloud.io/project/overview?id=juaalta_sonarqube-prometheus-exporter">
     <img src=https://sonarcloud.io/api/project_badges/measure?project=juaalta_sonarqube-prometheus-exporter&metric=alert_status" alt="SonarCloud Analysis">
