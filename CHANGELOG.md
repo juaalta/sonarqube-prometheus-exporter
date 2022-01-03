@@ -8,6 +8,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+
+## 1.1.0 - 2022-01-03
+
+### Added
+
 * The metrics are obtained from the list of metrics that the SonarQube has internally.
 * Deprecated metrics are removed.
 * Metrics without description are removed, since when the output is generated for Prometheus the process fails as it does not take into account that the description can be empty
@@ -26,10 +41,3 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * Updated Grafana images.
 * Changed TravisCI for Github Workflows
 
-### Deprecated
-
-### Removed
-
-### Fixed
-
-### Security
