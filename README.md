@@ -6,7 +6,7 @@
     <img src="https://github.com/juaalta/sonarqube-prometheus-exporter/actions/workflows/maven.yml/badge.svg" alt="Build Status">
   </a>
   <a href="https://sonarcloud.io/project/overview?id=juaalta_sonarqube-prometheus-exporter">
-    <img src=https://sonarcloud.io/api/project_badges/measure?project=juaalta_sonarqube-prometheus-exporter&metric=alert_status" alt=" SonarCloud Analysis ">
+    <img src="https://sonarcloud.io/api/project_badges/measure?project=juaalta_sonarqube-prometheus-exporter&metric=alert_status" alt=" SonarCloud Analysis ">
   </a>
   <a href="https://github.com/juaalta/sonarqube-prometheus-exporter/releases">
     <img src="https://img.shields.io/github/release/juaalta/sonarqube-prometheus-exporter.svg" alt="Download">
@@ -18,7 +18,6 @@
     <img src="https://img.shields.io/badge/semver-2.0.0-brightgreen.svg" alt="Semantic Versioning">
   </a>
 </p>
-
                                                                                                   
 <p align="center">
   <a href="#information">Information</a> •
