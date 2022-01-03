@@ -50,6 +50,8 @@
 		<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
 		<sonar.coverage.jacoco.xmlReportPaths>target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 		<sonar.language>java</sonar.language>
+		<sonar.organization>juaalta</sonar.organization>
+		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 
 	</properties>
 
