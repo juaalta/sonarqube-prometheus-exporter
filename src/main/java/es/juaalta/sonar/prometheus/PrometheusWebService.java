@@ -307,8 +307,20 @@ public class PrometheusWebService implements WebService {
 
   private List<Components.Component> getProjects(WsClient wsClient) {
 
-    return wsClient.components()
-        .search(new SearchRequest().setQualifiers(Collections.singletonList(Qualifiers.PROJECT)).setPs("500"))
-        .getComponentsList();
+    List<Components.Component> projects = new ArrayList<>();
+    int pageIndex = 1;
+    boolean hasMore = true;
+
+    while (hasMore) {
+      SearchResponse searchResponse = wsClient.components().search(new SearchRequest()
+        .setQualifiers(Collections.singletonList(Qualifiers.PROJECT))
+        .setPs(500)
+        .setP(pageIndex));
+      projects.addAll(searchResponse.getComponentsList());
+      hasMore = searchResponse.getPaging().getPageIndex() * searchResponse.getPaging().getPageSize() < searchResponse.getPaging().getTotal();
+      pageIndex++;
+    }
+
+    return projects;
   }
 }
