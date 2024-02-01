@@ -4,6 +4,7 @@ import static java.util.Objects.nonNull;
 
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -22,6 +23,7 @@ import org.sonar.api.server.ws.WebService;
 import org.sonar.api.utils.log.Logger;
 import org.sonar.api.utils.log.Loggers;
 import org.sonarqube.ws.Components;
+import org.sonarqube.ws.Components.SearchWsResponse;
 import org.sonarqube.ws.Measures;
 import org.sonarqube.ws.client.WsClient;
 import org.sonarqube.ws.client.WsClientFactories;
@@ -312,12 +314,12 @@ public class PrometheusWebService implements WebService {
     boolean hasMore = true;
 
     while (hasMore) {
-      SearchResponse searchResponse = wsClient.components().search(new SearchRequest()
-        .setQualifiers(Collections.singletonList(Qualifiers.PROJECT))
-        .setPs(500)
-        .setP(pageIndex));
+      SearchWsResponse searchResponse = wsClient.components()
+          .search(new SearchRequest().setQualifiers(Collections.singletonList(Qualifiers.PROJECT))
+              .setPs(String.valueOf(500)).setP(String.valueOf(pageIndex)));
       projects.addAll(searchResponse.getComponentsList());
-      hasMore = searchResponse.getPaging().getPageIndex() * searchResponse.getPaging().getPageSize() < searchResponse.getPaging().getTotal();
+      hasMore = searchResponse.getPaging().getPageIndex() * searchResponse.getPaging().getPageSize() < searchResponse
+          .getPaging().getTotal();
       pageIndex++;
     }
 
