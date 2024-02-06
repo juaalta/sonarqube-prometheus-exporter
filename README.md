@@ -7,7 +7,7 @@
   </a>
   <a href="https://sonarcloud.io/project/overview?id=juaalta_sonarqube-prometheus-exporter">
     <img src="https://sonarcloud.io/api/project_badges/measure?project=juaalta_sonarqube-prometheus-exporter&metric=alert_status" alt=" SonarCloud Analysis ">
-  </a>
+  </a>  
   <a href="https://github.com/juaalta/sonarqube-prometheus-exporter/releases">
     <img src="https://img.shields.io/github/release/juaalta/sonarqube-prometheus-exporter.svg" alt="Download">
   </a>
