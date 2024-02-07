@@ -16,7 +16,7 @@ services:
     volumes:
       - sonarqube_conf:/opt/sonarqube/conf
       - sonarqube_data:/opt/sonarqube/data
-      - ../target/sonar-prometheus-exporter-1.1.0-SNAPSHOT.jar:/opt/sonarqube//extensions/plugins/sonar-prometheus-exporter-1.0.0-SNAPSHOT.jar
+      - ../target/sonar-prometheus-exporter-1.2.0-SNAPSHOT.jar:/opt/sonarqube//extensions/plugins/sonar-prometheus-exporter-1.2.0-SNAPSHOT.jar
 
   db:
     image: postgres
