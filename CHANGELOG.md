@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
+* Process more than 500 SonarQube projects by [marceloavilaoliveira](https://github.com/marceloavilaoliveira). Pull Request: [PR1](https://github.com/juaalta/sonarqube-prometheus-exporter/pull/1)
+
 ### Changed
 
 ### Deprecated
